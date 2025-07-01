@@ -30,8 +30,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     # Copy binary
     cp target/release/playere "$APP_DIR/Contents/MacOS/YouTube Player"
     
-    # Copy icon
-    cp icons/icon.png "$APP_DIR/Contents/Resources/icon.png"
+    # Copy icon if it exists
+    if [ -f "icons/icon.png" ]; then
+        cp icons/icon.png "$APP_DIR/Contents/Resources/icon.png"
+    fi
     
     # Create Info.plist
     cat > "$APP_DIR/Contents/Info.plist" << EOF

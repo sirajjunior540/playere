@@ -3,7 +3,8 @@
     "beforeDevCommand": "",
     "beforeBuildCommand": "",
     "devPath": "./dist",
-    "distDir": "./dist"
+    "distDir": "./dist",
+    "withGlobalTauri": false
   },
   "package": {
     "productName": "YouTube Player",
@@ -22,31 +23,8 @@
       }
     },
     "bundle": {
-      "active": true,
-      "category": "DeveloperTool",
-      "copyright": "",
-      "deb": {
-        "depends": []
-      },
-      "externalBin": [],
-      "icon": ["icons/icon.png"],
-      "identifier": "com.playere.app",
-      "longDescription": "",
-      "macOS": {
-        "entitlements": null,
-        "exceptionDomain": "",
-        "frameworks": [],
-        "providerShortName": null,
-        "signingIdentity": null
-      },
-      "resources": [],
-      "shortDescription": "",
-      "targets": "all",
-      "windows": {
-        "certificateThumbprint": null,
-        "digestAlgorithm": "sha256",
-        "timestampUrl": ""
-      }
+      "active": false,
+      "identifier": "com.playere.app"
     },
     "security": {
       "csp": "default-src 'self'; frame-src 'self' https://www.youtube.com; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"

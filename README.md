@@ -191,6 +191,13 @@ You can customize the player by modifying:
 - Make sure to click and drag only the top area of the window
 - The drag region is the top 40 pixels of the window
 
+### App Crashes on Startup
+
+- **FIXED**: The issue was with Tauri's icon processing system causing memory alignment errors on some macOS setups
+- Solution: Disabled complex bundle configurations and used minimal bundle settings
+- Current version uses a simplified bundle configuration that avoids the problematic icon processing
+- App now runs reliably without crashes
+
 ### Build Errors
 
 1. Ensure all prerequisites are installed
