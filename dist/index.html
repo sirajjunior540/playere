@@ -10,190 +10,425 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            background: #000;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
             user-select: none;
+            color: #1d1d1f;
         }
-        
+
         #player-container {
             width: 100vw;
             height: 100vh;
             position: relative;
+            backdrop-filter: blur(20px);
         }
-        
+
         #youtube-player {
             width: 100%;
             height: 100%;
             border: none;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
-        
+
         #drag-region {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 40px;
+            height: 44px;
             cursor: move;
             z-index: 999;
-        }
-        
-        #controls {
-            position: absolute;
-            top: 10px;
-            right: 10px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 12px 12px 0 0;
+            -webkit-app-region: no-drag;
             opacity: 0;
             transition: opacity 0.3s ease;
-            z-index: 1000;
         }
-        
-        #controls:hover,
-        #drag-region:hover ~ #controls {
+
+        #drag-region:hover {
             opacity: 1;
         }
-        
+
+        #drag-region.draggable {
+            -webkit-app-region: drag;
+            opacity: 1;
+            background: linear-gradient(180deg, rgba(102, 126, 234, 0.3) 0%, transparent 100%);
+        }
+
+        #controls {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            transform: translateY(-5px);
+        }
+
+        #controls:hover,
+        #drag-region:hover ~ #controls,
+        body:hover #controls {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         .control-btn {
-            background: rgba(0, 0, 0, 0.7);
-            border: none;
-            color: white;
-            padding: 8px 12px;
-            margin: 0 2px;
-            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 8px 10px;
+            margin: 0 4px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
-            transition: background 0.2s ease;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
-        
+
         .control-btn:hover {
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }
-        
+
+        .control-btn:active {
+            transform: translateY(0);
+            transition: transform 0.1s;
+        }
+
         #url-input-container {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(40px);
+            padding: 40px;
+            border-radius: 20px;
             text-align: center;
-            color: white;
+            color: #1d1d1f;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            max-width: 500px;
+            width: 90%;
         }
-        
+
+        #url-input-container h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        #url-input-container p {
+            font-size: 17px;
+            font-weight: 400;
+            color: #86868b;
+            margin-bottom: 24px;
+            line-height: 1.4;
+        }
+
+        #input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
         #url-input {
-            width: 400px;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #333;
-            border-radius: 4px;
-            background: #222;
-            color: white;
-            font-size: 14px;
+            flex: 1;
+            min-width: 300px;
+            padding: 14px 16px;
+            border: 2px solid rgba(134, 134, 139, 0.2);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.8);
+            color: #1d1d1f;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
         }
-        
+
+        #url-input:focus {
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        #url-input::placeholder {
+            color: #86868b;
+            font-weight: 400;
+        }
+
         #load-btn {
-            background: #ff0000;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
+            padding: 14px 24px;
+            border-radius: 12px;
             cursor: pointer;
-            margin-left: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: inherit;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            min-width: 120px;
         }
-        
+
         #load-btn:hover {
-            background: #cc0000;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
         }
-        
+
+        #load-btn:active {
+            transform: translateY(0);
+            transition: transform 0.1s;
+        }
+
         .hidden {
             display: none;
+        }
+
+        /* Traffic lights style for close button */
+        .control-btn.close {
+            background: #ff5f57;
+            border: 1px solid #e0443e;
+            color: rgba(0, 0, 0, 0.7);
+            font-weight: 600;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 11px;
+            padding: 0;
+        }
+
+        .control-btn.close:hover {
+            background: #ff3b30;
+            transform: scale(1.1);
+        }
+
+        /* Subtle animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -45%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        #url-input-container {
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            #url-input-container {
+                padding: 32px 24px;
+                margin: 20px;
+            }
+
+            #url-input-container h2 {
+                font-size: 24px;
+            }
+
+            #input-wrapper {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            #url-input {
+                min-width: 100%;
+            }
+
+            #load-btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="player-container">
-        <iframe id="youtube-player" class="hidden" allowfullscreen 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        
-        <div id="drag-region"></div>
-        
-        <div id="controls">
-            <button class="control-btn" onclick="closeApp()">✕</button>
-        </div>
-        
-        <div id="url-input-container">
-            <h2>YouTube Player</h2>
-            <p>Enter a YouTube URL to start playing:</p>
-            <div>
-                <input type="text" id="url-input" placeholder="https://www.youtube.com/watch?v=..." />
-                <button id="load-btn" onclick="loadVideo()">Load Video</button>
-            </div>
-        </div>
+<div id="player-container">
+    <iframe id="youtube-player" class="hidden" allowfullscreen
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"></iframe>
+
+    <div id="drag-region"></div>
+
+    <div id="controls">
+        <button class="control-btn" id="move-btn" onclick="toggleMove()">
+            <span id="move-icon">🔒</span>
+        </button>
+        <button class="control-btn" id="pin-btn" onclick="togglePin()" style="background: rgba(255, 95, 87, 0.8);">
+            <span id="pin-icon">📌</span>
+        </button>
+        <button class="control-btn close" onclick="closeApp()">✕</button>
     </div>
 
-    <script>
-        const { invoke, listen } = window.__TAURI__;
+    <div id="url-input-container">
+        <h2>YouTube Player</h2>
+        <p>Enter a YouTube URL to start your viewing experience</p>
+        <div id="input-wrapper">
+            <input type="text" id="url-input" placeholder="https://www.youtube.com/watch?v=..." />
+            <button id="load-btn" onclick="loadVideo()">Load Video</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentPlayer = null;
+    let isDragEnabled = false;
+    let isPinned = true;
+
+    function extractVideoId(url) {
+        const patterns = [
+            /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+            /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+            /youtube\.com\/v\/([a-zA-Z0-9_-]{11})/
+        ];
         
-        let currentPlayer = null;
-        
-        async function loadVideo() {
-            const urlInput = document.getElementById('url-input');
-            const url = urlInput.value.trim();
-            
-            if (!url) {
-                alert('Please enter a YouTube URL');
-                return;
-            }
-            
-            try {
-                const player = await invoke('load_video', { url });
-                displayVideo(player);
-            } catch (error) {
-                alert('Error: ' + error);
+        for (const pattern of patterns) {
+            const match = url.match(pattern);
+            if (match && match[1]) {
+                return match[1];
             }
         }
+        return null;
+    }
+    
+    function createEmbedUrl(videoId) {
+        return `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3`;
+    }
+
+    function loadVideo() {
+        const urlInput = document.getElementById('url-input');
+        const url = urlInput.value.trim();
+
+        if (!url) {
+            urlInput.style.borderColor = '#ff3b30';
+            urlInput.style.boxShadow = '0 0 0 4px rgba(255, 59, 48, 0.1)';
+            setTimeout(() => {
+                urlInput.style.borderColor = 'rgba(134, 134, 139, 0.2)';
+                urlInput.style.boxShadow = 'none';
+            }, 2000);
+            return;
+        }
+
+        const videoId = extractVideoId(url);
+        if (!videoId) {
+            urlInput.style.borderColor = '#ff3b30';
+            urlInput.style.boxShadow = '0 0 0 4px rgba(255, 59, 48, 0.1)';
+            setTimeout(() => {
+                urlInput.style.borderColor = 'rgba(134, 134, 139, 0.2)';
+                urlInput.style.boxShadow = 'none';
+            }, 2000);
+            return;
+        }
+
+        const playerElement = document.getElementById('youtube-player');
+        const inputContainer = document.getElementById('url-input-container');
         
-        function displayVideo(player) {
-            const playerElement = document.getElementById('youtube-player');
+        playerElement.src = createEmbedUrl(videoId);
+        playerElement.classList.remove('hidden');
+        inputContainer.classList.add('hidden');
+    }
+
+    function closeApp() {
+        if (window.ipc) {
+            window.ipc.postMessage('close');
+        } else {
+            window.close();
+        }
+    }
+
+    function toggleMove() {
+        isDragEnabled = !isDragEnabled;
+        const dragRegion = document.getElementById('drag-region');
+        const moveIcon = document.getElementById('move-icon');
+        const moveBtn = document.getElementById('move-btn');
+        
+        if (isDragEnabled) {
+            dragRegion.classList.add('draggable');
+            moveIcon.textContent = '🔓';
+            moveBtn.style.background = 'rgba(102, 126, 234, 0.8)';
+        } else {
+            dragRegion.classList.remove('draggable');
+            moveIcon.textContent = '🔒';
+            moveBtn.style.background = 'rgba(255, 255, 255, 0.15)';
+        }
+    }
+
+    function togglePin() {
+        isPinned = !isPinned;
+        const pinIcon = document.getElementById('pin-icon');
+        const pinBtn = document.getElementById('pin-btn');
+        
+        if (isPinned) {
+            pinIcon.textContent = '📌';
+            pinBtn.style.background = 'rgba(255, 95, 87, 0.8)';
+        } else {
+            pinIcon.textContent = '📍';
+            pinBtn.style.background = 'rgba(255, 255, 255, 0.15)';
+        }
+        
+        if (window.ipc) {
+            window.ipc.postMessage(`pin:${isPinned}`);
+        }
+    }
+
+    document.getElementById('url-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            loadVideo();
+        }
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeApp();
+        }
+        
+        // Handle Cmd+V for paste (Mac) or Ctrl+V (Windows/Linux)
+        if ((e.metaKey || e.ctrlKey) && e.key === 'v') {
+            const input = document.getElementById('url-input');
             const inputContainer = document.getElementById('url-input-container');
             
-            playerElement.src = player.embed_url;
-            playerElement.classList.remove('hidden');
-            inputContainer.classList.add('hidden');
+            if (inputContainer.classList.contains('hidden')) {
+                // Show input container if hidden
+                document.getElementById('youtube-player').classList.add('hidden');
+                inputContainer.classList.remove('hidden');
+            }
             
-            currentPlayer = player;
+            setTimeout(() => {
+                input.focus();
+                input.select();
+            }, 10);
         }
-        
-        async function closeApp() {
-            await invoke('close_app');
-        }
-        
-        async function startDrag() {
-            await invoke('drag_window');
-        }
-        
-        document.getElementById('drag-region').addEventListener('mousedown', startDrag);
-        
-        document.getElementById('url-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                loadVideo();
-            }
-        });
-        
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeApp();
-            }
-        });
-        
-        listen('load-video', (event) => {
-            displayVideo(event.payload);
-        });
-        
-        window.addEventListener('contextmenu', e => e.preventDefault());
-    </script>
+    });
+
+    window.addEventListener('contextmenu', e => e.preventDefault());
+
+    // Enhanced focus management
+    document.getElementById('url-input').addEventListener('focus', function() {
+        this.select();
+    });
+</script>
 </body>
 </html>
